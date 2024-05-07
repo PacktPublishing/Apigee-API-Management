@@ -1,6 +1,4 @@
 
-var CryptoJS = require("./crypto-js.min.js");
-
 var cipherOp = context.getVariable( "flow.cipher-op-aes" )
 var passphrase = context.getVariable( "flow.cipher-passphrase" );
 var salt = CryptoJS.enc.Base64.parse( context.getVariable( "flow.cipher-salt" ) );

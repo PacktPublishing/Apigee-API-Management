@@ -1,0 +1,20 @@
+<APIProxy revision="22" name="crypto-aes-js">
+    <DisplayName></DisplayName>
+    <Description></Description>
+    <CreatedAt>1715107704820</CreatedAt>
+    <LastModifiedAt>1715107749490</LastModifiedAt>
+    <BasePaths>/crypto-aes-js</BasePaths>
+    <Policies>
+        <Policy>AssignMessage.CryptoOpParams</Policy>
+        <Policy>JavaScriptAesCryptoOps</Policy>
+        <Policy>AssignMessage.SetContentToPlainText</Policy>
+        <Policy>AssignMessage.SetContentToCipherText</Policy>
+    </Policies>
+    <ProxyEndpoints>
+        <ProxyEndpoint>default</ProxyEndpoint>
+    </ProxyEndpoints>
+    <Resources>
+        <Resource>jsc://aes-enc-dec.js</Resource>
+        <Resource>jsc://crypto-js-3.3.0.min.js</Resource>
+    </Resources>
+</APIProxy>

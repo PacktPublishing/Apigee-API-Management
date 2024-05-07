@@ -1,6 +1,8 @@
 
 
-const jspolicy = "./aes-enc-dec.js"
+const jspolicy = "../../apiproxy/resources/jsc/aes-enc-dec";
+const cryptojs = "../../apiproxy/resources/jsc/crypto-js-3.3.0.min";
+
 
 const requirer = () => {
     try {
@@ -19,7 +21,9 @@ describe('aes crypt ops tests', () => {
 
     beforeEach(() => {
         jest.resetModules();
+        
         global.context = {};
+        global.CryptoJS = require( cryptojs )
     });
 
     it('aes encrypt test', () => {
@@ -32,7 +36,8 @@ describe('aes crypt ops tests', () => {
     
         global.context.setVariable = jest.fn();
  
-        requirer()
+        
+        require( jspolicy )
  
         expect( global.context.setVariable ).toHaveBeenCalledTimes( 1 );
         expect( global.context.setVariable.mock.calls[0][1] ).toBe( cipherText );
@@ -49,7 +54,7 @@ describe('aes crypt ops tests', () => {
 
         global.context.setVariable = jest.fn();
 
-        requirer()
+        require( jspolicy )
 
         expect( global.context.setVariable ).toHaveBeenCalledTimes( 1 );
         expect( global.context.setVariable.mock.calls[0][1] ).toBe( plainText );

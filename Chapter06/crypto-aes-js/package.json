@@ -1,7 +1,7 @@
 {
     "name": "aes-enc-dec",
     "scripts": {
-      "test": "jest"
+      "unit-test": "jest"
   },
   "devDependencies": {
     "jest": "^29.7.0"

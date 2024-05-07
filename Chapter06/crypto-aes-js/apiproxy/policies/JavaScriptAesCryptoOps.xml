@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Javascript continueOnError="false" enabled="true" timeLimit="25000" name="JavaScriptAesCryptoOps">
+    <ResourceURL>jsc://aes-enc-dec.js</ResourceURL>
+    <IncludeURL>jsc://crypto-js-3.3.0.min.js</IncludeURL>
+</Javascript>
