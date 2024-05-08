@@ -1,0 +1,19 @@
+<APIProxy revision="4" name="crypto-aes-java">
+    <DisplayName></DisplayName>
+    <Description></Description>
+    <CreatedAt>1714951482754</CreatedAt>
+    <LastModifiedAt>1714951482754</LastModifiedAt>
+    <BasePaths>/crypto-aes-java</BasePaths>
+    <Policies>
+        <Policy>AssignMessage.CryptoOpParams</Policy>
+        <Policy>AssignMessage.SetContentToPlainText</Policy>
+        <Policy>AssignMessage.SetContentToCipherText</Policy>
+        <Policy>JavaCallout.CryptoAes</Policy>
+    </Policies>
+    <ProxyEndpoints>
+        <ProxyEndpoint>default</ProxyEndpoint>
+    </ProxyEndpoints>
+    <Resources>
+        <Resource>java://crypto-aes-1.0-SNAPSHOT.jar</Resource>
+    </Resources>
+</APIProxy>

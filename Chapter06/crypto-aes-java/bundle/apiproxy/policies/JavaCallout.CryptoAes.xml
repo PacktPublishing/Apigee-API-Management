@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<JavaCallout continueOnError="false" enabled="true" name="JavaCallout.CryptoAes">
+    <ClassName>com.apigee.aescryptops.AesCryptOpsCallout</ClassName>
+    <ResourceURL>java://crypto-aes-1.0-SNAPSHOT.jar</ResourceURL>
+</JavaCallout>

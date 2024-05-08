@@ -1,6 +1,6 @@
-# Cryptography with Javascript
+# Cryptography with JavaScript
 
-This Apigee API Proxy performs encryption and decryption operations with AES cipher and PBKDF2 password hashing.
+This Apigee API Proxy performs encryption and decryption operations with AES cipher and PBKDF2 password hashing using JavaScript policy
 
 Unit tests for JavaScript code with mocks of Apigee global functions using [Jest](https://jestjs.io/).
 
@@ -30,7 +30,7 @@ npm run unit-test
 
 Copy the token outputted by the following command:
 ```
-gcloud auth print-access-token)
+gcloud auth print-access-token
 ```
 
 ### On your development computer, i.e., where you run VSCode
