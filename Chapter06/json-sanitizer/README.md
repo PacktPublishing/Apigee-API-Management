@@ -1,6 +1,9 @@
-# Cryptography with Java Callout
+# Cryptography with Java Sanitizer Callout
 
-This Apigee API Proxy performs encryption and decryption operations with AES cipher and PBKDF2 password hashing using Java Callout
+This Apigee API Proxy performs sanitazation of JSON messages according to the OWASP recommendation using Java Callout
+https://owasp.org/json-sanitizer/
+
+It takes a JSON-like content and converts it to valid JSON.
 
 Unit tests for Java Callout code are impelemented using JUnit and JMockit frameworks.
 
@@ -52,7 +55,7 @@ cd ..
 ### To "deploy" java callout into the proxy resources/java folder:
 
 ```
-cp callout/target/crypto-aes-1.0-SNAPSHOT.jar bundle/apiproxy/resources/java
+cp callout/target/json-sanitizer-callout-1.0.jar bundle/apiproxy/resources/java
 ```
 
 
@@ -77,13 +80,16 @@ Cache the token value so you don't need to repeat it for each `apigeecli` comman
 apigeecli token cache -t $TOKEN
 ```
 
-### To set up variables and test connectivity
+### To set up environment variables
 ```
 ORG=apigeex-devops
 ENV=eval
 
-API=crypto-aes-java
+API=json-sanitizer
+```
 
+### To test the token
+```
 apigeecli apis list --org=$ORG
 ```
 
@@ -103,32 +109,34 @@ apigeecli apis deploy --ovr --wait --name $API --rev $REV --org $ORG --env $ENV
 
 ### To test the API Proxy, in the client-vm
 
-Encrypt operation:
+
 ```
-curl -X POST https://api.exco.com/crypto-aes-java \
-  --header 'Content-Type: application/x-www-form-urlencoded' \
-  --data op=encrypt \
-  --data passphrase=secretkey123 \
-  --data salt=1oycXzfn6fU= \
-  --data plaintext=my%20message%0A
+curl https://api.exco.com/json-sanitizer \
+  -H "Content-Type: application/json" \
+  --data-binary @- <<EOF
+{"xx":"<script>alert(1)</script>", "yy": 'yyy',"ar":[0,,2]}
+EOF
+```
+
+sanitized output:
+```
+{"xx":"<script>alert(1)<\/script>", "yy": "yyy","ar":[0,null,2]}
 ```
 
 
-Decrypt operation:
+
 ```
-curl -X POST https://api.exco.com/crypto-aes-java \
-  --header 'Content-Type: application/x-www-form-urlencoded' \
-  --data op=decrypt \
-  --data passphrase=secretkey123 \
-  --data salt=1oycXzfn6fU= \
-  --data ciphertext=n90/3q45JlmrIQYbVu0gCQ==
+curl https://api.exco.com/json-sanitizer \
+  -H "Content-Type: application/json; charset=utf-8" \
+  --data-binary @- <<EOF
+{foo:'bar',arr:[1,2,3,],val:/*/true**/false}
+EOF
+```
+expected result:
+```
+{"foo":"bar","arr":[1,2,3],"val":false
 ```
 
-
-### To list $API proxy deployments
-```
-apigeecli apis listdeploy get --env=$ENV --org=$ORG --name=$API
-```
 
 ### To delete the proxy
 

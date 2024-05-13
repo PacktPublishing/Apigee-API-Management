@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<JavaCallout continueOnError="false" enabled="true" name="JavaCalloutJSONSanitizer">
+    <DisplayName>JavaCallout.JSONSanitizer</DisplayName>
+    <Properties/>
+    <ClassName>com.apigee.jsonsanitizer.JsonSanitizerCallout</ClassName>
+    <ResourceURL>java://json-sanitizer-callout-1.0.jar</ResourceURL>
+</JavaCallout>

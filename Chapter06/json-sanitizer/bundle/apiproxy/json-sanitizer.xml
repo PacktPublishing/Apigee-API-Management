@@ -1,0 +1,17 @@
+<APIProxy revision="8" name="json-sanitizer">
+    <DisplayName></DisplayName>
+    <Description></Description>
+    <CreatedAt>1714951399051</CreatedAt>
+    <LastModifiedAt>1714951399051</LastModifiedAt>
+    <BasePaths>/json-sanitizer</BasePaths>
+    <Policies>
+        <Policy>AssignMessage.Echo</Policy>
+        <Policy>JavaCalloutJSONSanitizer</Policy>
+    </Policies>
+    <ProxyEndpoints>
+        <ProxyEndpoint>default</ProxyEndpoint>
+    </ProxyEndpoints>
+    <Resources>
+        <Resource>java://json-sanitizer-callout-1.0.jar</Resource>
+    </Resources>
+</APIProxy>
