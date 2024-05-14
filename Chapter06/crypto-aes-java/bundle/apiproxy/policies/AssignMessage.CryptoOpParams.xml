@@ -13,8 +13,8 @@
         <Ref>request.formparam.salt</Ref>
     </AssignVariable>
     <AssignVariable>
-        <Name>flow.cipher-salt</Name>
-        <Ref>request.formparam.salt</Ref>
+        <Name>flow.cipher-iterations</Name>
+        <Ref>request.formparam.iterations</Ref>
     </AssignVariable>
     <AssignVariable>
         <Name>flow.plain-text</Name>

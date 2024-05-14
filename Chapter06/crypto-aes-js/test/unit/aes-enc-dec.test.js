@@ -16,6 +16,7 @@ describe('aes crypt ops tests', () => {
     let plainText = "my message\n";
 
     let salt = '1oycXzfn6fU=';
+    let iterations = 10000;
     let passphrase = 'secretkey123';
     let cipherText = 'n90/3q45JlmrIQYbVu0gCQ=='
 
@@ -31,6 +32,7 @@ describe('aes crypt ops tests', () => {
         .mockReturnValueOnce('encrypt')
         .mockReturnValueOnce( passphrase )
         .mockReturnValueOnce( salt )
+        .mockReturnValueOnce( iterations )
         .mockReturnValueOnce( plainText );
         
     
@@ -49,6 +51,7 @@ describe('aes crypt ops tests', () => {
         .mockReturnValueOnce('decrypt')
         .mockReturnValueOnce( passphrase )
         .mockReturnValueOnce( salt )
+        .mockReturnValueOnce( iterations )
         .mockReturnValueOnce( cipherText );
         
 

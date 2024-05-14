@@ -17,7 +17,7 @@ function derivePkdf2KeyAndIv( passphrase, keySize, iterations, salt ){
 }
 
 var keySize = 384;
-var iterations = 10000;
+var iterations = parseInt( context.getVariable( "flow.iterations" )) || 10000;
 
 if( cipherOp == "encrypt" ){
     // op is encrypt

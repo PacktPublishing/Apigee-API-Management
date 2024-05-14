@@ -64,7 +64,7 @@ NOTE: for a current folder `--name=${PWD##*/}`
 ```
 REV=$(apigeecli apis create bundle --name=$API --org=$ORG --proxy-folder=apiproxy --wait | jq -r .revision)
 
-apigeecli apis deploy --wait --name $API --rev $REV --org $ORG --env $ENV --token $TOKEN
+apigeecli apis deploy --ovr --wait --name $API --rev $REV --org $ORG --env $ENV
 ```
 
 
@@ -78,6 +78,7 @@ curl -X POST https://api.exco.com/crypto-aes-js \
   --data op=encrypt \
   --data passphrase=secretkey123 \
   --data salt=1oycXzfn6fU= \
+  --data iterations=10000 \
   --data plaintext=my%20message%0A
 ```
 
@@ -89,6 +90,7 @@ curl -X POST https://api.exco.com/crypto-aes-js \
   --data op=decrypt \
   --data passphrase=secretkey123 \
   --data salt=1oycXzfn6fU= \
+  --data iterations=10000 \
   --data ciphertext=n90/3q45JlmrIQYbVu0gCQ==
 ```
 
