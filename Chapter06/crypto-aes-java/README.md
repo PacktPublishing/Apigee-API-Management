@@ -108,8 +108,8 @@ Encrypt operation:
 curl -X POST https://api.exco.com/crypto-aes-java \
   --header 'Content-Type: application/x-www-form-urlencoded' \
   --data op=encrypt \
-  --data passphrase=secretkey123 \
-  --data salt=1oycXzfn6fU= \
+  --data-urlencode passphrase=secretkey123 \
+  --data-urlencode salt=1oycXzfn6fU= \
   --data iterations=10000 \
   --data plaintext=my%20message%0A
 ```
@@ -120,10 +120,10 @@ Decrypt operation:
 curl -X POST https://api.exco.com/crypto-aes-java \
   --header 'Content-Type: application/x-www-form-urlencoded' \
   --data op=decrypt \
-  --data passphrase=secretkey123 \
-  --data salt=1oycXzfn6fU= \
+  --data-urlencode passphrase=secretkey123 \
+  --data-urlencode salt=1oycXzfn6fU= \
   --data iterations=10000 \
-  --data ciphertext=n90/3q45JlmrIQYbVu0gCQ==
+  --data-urlencode ciphertext=n90/3q45JlmrIQYbVu0gCQ==
 ```
 
 
