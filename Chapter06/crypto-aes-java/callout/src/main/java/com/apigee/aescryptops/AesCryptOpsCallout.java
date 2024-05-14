@@ -34,7 +34,10 @@ public class AesCryptOpsCallout implements Execution {
     public ExecutionResult execute(MessageContext messageContext, ExecutionContext executionContext) {
 
         Integer keySize = 384;
-        Integer iterations = 10000;
+        Integer iterations = (Integer)messageContext.getVariable( "flow.iterations" );
+        if( iterations == null ){
+            iterations = 10000;
+        };
 
         SecretKeySpec key = null;
         IvParameterSpec iv = null;
