@@ -110,6 +110,7 @@ curl -X POST https://api.exco.com/crypto-aes-java \
   --data op=encrypt \
   --data passphrase=secretkey123 \
   --data salt=1oycXzfn6fU= \
+  --data iterations=10000 \
   --data plaintext=my%20message%0A
 ```
 
@@ -121,6 +122,7 @@ curl -X POST https://api.exco.com/crypto-aes-java \
   --data op=decrypt \
   --data passphrase=secretkey123 \
   --data salt=1oycXzfn6fU= \
+  --data iterations=10000 \
   --data ciphertext=n90/3q45JlmrIQYbVu0gCQ==
 ```
 

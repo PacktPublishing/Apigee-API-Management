@@ -61,7 +61,7 @@ public class AesCryptOpsTest {
     {
         String plainText = "my message\n";
 
-        Integer iterations = 10000;
+        String iterations = "10000";
         String salt = "1oycXzfn6fU=";
         String passphrase = "secretkey123";
         String cipherText = "n90/3q45JlmrIQYbVu0gCQ==";
