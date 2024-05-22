@@ -1,0 +1,18 @@
+<APIProxy revision="50" name="mashup">
+    <DisplayName></DisplayName>
+    <Description></Description>
+    <CreatedAt>1716413078149</CreatedAt>
+    <LastModifiedAt>1716413078149</LastModifiedAt>
+    <BasePaths>/mashup</BasePaths>
+    <Policies>
+        <Policy>JavaScript.Fork</Policy>
+        <Policy>JavaScript.Join</Policy>
+    </Policies>
+    <ProxyEndpoints>
+        <ProxyEndpoint>default</ProxyEndpoint>
+    </ProxyEndpoints>
+    <Resources>
+        <Resource>jsc://fork.js</Resource>
+        <Resource>jsc://join.js</Resource>
+    </Resources>
+</APIProxy>

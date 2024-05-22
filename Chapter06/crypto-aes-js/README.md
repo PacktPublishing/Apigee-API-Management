@@ -103,7 +103,7 @@ apigeecli apis listdeploy get --env=$ENV --org=$ORG --name=$API
 ### To delete the proxy
 
 ```
-REV=$( apigeecli apis listdeploy get --env=$ENV --org=$ORG --name=$API|jq -r .deployments[0].revision)
+REV=$(apigeecli envs deployments get --env=$ENV --org=$ORG |jq -r ".deployments[]|select(.apiProxy==\"$API\")".revision)
 
 apigeecli apis undeploy --name $API --env $ENV --rev $REV --org $ORG
 
