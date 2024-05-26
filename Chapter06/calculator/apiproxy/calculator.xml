@@ -1,0 +1,16 @@
+<APIProxy revision="1" name="calculator">
+    <DisplayName></DisplayName>
+    <Description></Description>
+    <CreatedAt>1716723561554</CreatedAt>
+    <LastModifiedAt>1716726735979</LastModifiedAt>
+    <BasePaths>/calculator</BasePaths>
+    <Policies>
+        <Policy>JavaScriptCalculator</Policy>
+    </Policies>
+    <ProxyEndpoints>
+        <ProxyEndpoint>default</ProxyEndpoint>
+    </ProxyEndpoints>
+    <Resources>
+        <Resource>jsc://calculator.js</Resource>
+    </Resources>
+</APIProxy>
