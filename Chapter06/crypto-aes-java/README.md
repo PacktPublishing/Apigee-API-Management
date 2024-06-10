@@ -52,6 +52,7 @@ cd ..
 ### To "deploy" java callout into the proxy resources/java folder:
 
 ```
+mkdir -p bundle/apiproxy/resources/java
 cp callout/target/crypto-aes-1.0-SNAPSHOT.jar bundle/apiproxy/resources/java
 ```
 

@@ -3,5 +3,5 @@
     <DisplayName>JavaCallout.JSONSanitizer</DisplayName>
     <Properties/>
     <ClassName>com.apigee.jsonsanitizer.JsonSanitizerCallout</ClassName>
-    <ResourceURL>java://json-sanitizer-callout-1.0.jar</ResourceURL>
+    <ResourceURL>java://json-sanitizer-callout-1.0-SNAPSHOT.jar</ResourceURL>
 </JavaCallout>
