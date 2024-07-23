@@ -1,0 +1,4 @@
+cucumber-reports:5.7.3
+git:4.11.5
+htmlpublisher:1.30
+mask-passwords:3.3
