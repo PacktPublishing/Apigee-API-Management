@@ -1,4 +1,5 @@
-cucumber-reports:5.7.3
-git:4.11.5
-htmlpublisher:1.30
-mask-passwords:3.3
+configuration-as-code:latest
+git:latest
+cucumber-reports:5.8.3
+htmlpublisher:1.36
+mask-passwords:173.v6a_077a_291eb_5
