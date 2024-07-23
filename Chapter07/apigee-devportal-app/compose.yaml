@@ -1,7 +1,7 @@
 
 services:
   apigee-kickstart:
-    image: ghcr.io/apigee/docker-apigee-drupal-kickstart:v1.0.1
+    image: ghcr.io/apigee/docker-apigee-drupal-kickstart:v1.0.2
     ports:
     - "8080:80"
     environment:
