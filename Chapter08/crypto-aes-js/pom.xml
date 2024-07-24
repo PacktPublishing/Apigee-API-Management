@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>apigeex-devops</groupId>
+	<artifactId>crypto-aes-js</artifactId>
+	<version>v1</version>
+	<name>crypto-aes-js</name>
+	<packaging>pom</packaging>
+	<pluginRepositories>
+		<pluginRepository>
+			<id>central</id>
+			<name>Maven Plugin Repository</name>
+			<url>https://repo.maven.apache.org/maven2</url>
+			<layout>default</layout>
+		</pluginRepository>
+	</pluginRepositories>
+	<repositories>
+		<repository>
+			<id>central</id>
+			<name>Central Repository</name>
+			<url>https://repo.maven.apache.org/maven2</url>
+			<layout>default</layout>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+	</repositories>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<org.slf4j.simpleLogger.defaultLogLevel>info</org.slf4j.simpleLogger.defaultLogLevel>
+		<project.root.dir>${basedir}</project.root.dir>
+		<target.root.dir>${basedir}/target</target.root.dir>
+		<deployment.suffix></deployment.suffix>
+		<apigee.options>override</apigee.options>
+		<apigee.apiversion>v1</apigee.apiversion>
+		<apigee.org>${org}</apigee.org>
+		<apigee.env>${env}</apigee.env>
+		<deployment.description>n/a</deployment.description>
+		<apigee.config.options>update</apigee.config.options>
+		<apigee.config.dir>resources/edge</apigee.config.dir>
+	</properties>
+
+	<profiles>
+		<profile>
+			<!-- Apigee X and hybrid -->
+			<id>googleapi</id>
+			<properties>
+				<apigee.plugin.version>2.3.5</apigee.plugin.version>
+				<apigee.config-plugin.version>2.4.4</apigee.config-plugin.version>
+				<apigee.hosturl>https://apigee.googleapis.com</apigee.hosturl>
+				<apigee.bearer>${token}</apigee.bearer> <!-- this takes precedence over service account file -->
+				<apigee.serviceaccount.file>${sa}</apigee.serviceaccount.file>
+			</properties>
+		</profile>
+	</profiles>
+
+	<build>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>io.apigee.build-tools.enterprise4g</groupId>
+					<artifactId>apigee-edge-maven-plugin</artifactId>
+					<version>${apigee.plugin.version}</version>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+
+		<plugins>
+
+			<!-- copy the full apiproxy folder to target folder -->
+			<plugin>
+				<artifactId>maven-resources-plugin</artifactId>
+				<version>2.6</version>
+				<executions>
+					<execution>
+						<id>copy-resources</id>
+						<phase>process-resources</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<overwrite>true</overwrite>
+							<resources>
+								<resource>
+									<directory>${project.root.dir}</directory>
+									<filtering>true</filtering>
+									<includes>
+										<include>apiproxy/**</include>
+										<include>sharedflowbundle/**</include>
+										<include>test/integration/**</include>
+										<include>resources/**</include>
+									</includes>
+								</resource>
+							</resources>
+							<outputDirectory>${target.root.dir}</outputDirectory>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>com.google.code.maven-replacer-plugin</groupId>
+				<artifactId>replacer</artifactId>
+				<version>1.5.3</version>
+				<executions>
+					<execution>
+						<phase>process-resources</phase>
+						<goals>
+							<goal>replace</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<basedir>${target.root.dir}</basedir>
+					<includes>
+						<include>test/integration/support/init.js</include>
+						<include>apiproxy/airports-cicd-v1.xml</include>
+						<include>apiproxy/proxies/default.xml</include>
+					</includes>
+					<replacements>
+						<replacement>
+							<token>org-env.apigee.net</token>
+							<value>${apigee.org}-${apigee.env}.apigee.net</value>
+						</replacement>
+						<replacement>
+							<token>/airports-cicd/v1</token>
+							<value>/airports-cicd${deployment.suffix}/v1</value>
+						</replacement>
+						<replacement>
+							<token>@description</token>
+							<value>${deployment.description}</value>
+						</replacement>
+					</replacements>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>io.apigee.build-tools.enterprise4g</groupId>
+				<artifactId>apigee-edge-maven-plugin</artifactId>
+				<version>${apigee.plugin.version}</version>
+				<executions>
+					<execution>
+						<id>configure-bundle-step</id>
+						<phase>package</phase>
+						<goals>
+							<goal>configure</goal>
+						</goals>
+					</execution>
+					<!--deploy bundle -->
+					<execution>
+						<id>deploy-bundle-step</id>
+						<phase>install</phase>
+						<goals>
+							<goal>deploy</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<!-- cleaning dirs -->
+			<plugin>
+				<artifactId>maven-clean-plugin</artifactId>
+				<version>2.5</version>
+
+				<executions>
+					<execution>
+						<id>auto-clean-init</id>
+						<phase>initialize</phase>
+						<goals>
+							<goal>clean</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>

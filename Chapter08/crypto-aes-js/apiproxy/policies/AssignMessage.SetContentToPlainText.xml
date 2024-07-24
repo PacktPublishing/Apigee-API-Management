@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<AssignMessage continueOnError="false" enabled="true" name="AssignMessage.SetContentToPlainText">
+    <Set>
+        <Payload contentType="text/plain">{flow.plain-text}</Payload>
+    </Set>
+</AssignMessage>

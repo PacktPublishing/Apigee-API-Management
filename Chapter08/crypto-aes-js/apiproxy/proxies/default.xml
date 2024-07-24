@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ProxyEndpoint name="default">
+    <PreFlow name="PreFlow">
+        <Request>
+            <Step>
+                <Name>AssignMessage.CryptoOpParams</Name>
+            </Step>
+            <Step>
+                <Name>JavaScriptAesCryptoOps</Name>
+            </Step>
+        </Request>
+        <Response>
+            <Step>
+                <Condition>flow.cipher-op-aes = "encrypt"</Condition>
+                <Name>AssignMessage.SetContentToCipherText</Name>
+            </Step>
+            <Step>
+                <Condition>flow.cipher-op-aes = "decrypt"</Condition>
+                <Name>AssignMessage.SetContentToPlainText</Name>
+            </Step>
+        </Response>
+    </PreFlow>
+    <Flows/>
+    <PostFlow name="PostFlow">
+        <Request/>
+        <Response/>
+    </PostFlow>
+    <HTTPProxyConnection>
+        <BasePath>/crypto-aes-js</BasePath>
+    </HTTPProxyConnection>
+    <RouteRule name="noroute"/>
+</ProxyEndpoint>
