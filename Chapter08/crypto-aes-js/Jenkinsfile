@@ -109,8 +109,6 @@ pipeline {
               reportFiles: 'apigeelint-out.html',
               reportName: 'Apigeelint Report'
             ]);
-
-            sh "rm apigeelint-out.html"
           }}
         }
 
