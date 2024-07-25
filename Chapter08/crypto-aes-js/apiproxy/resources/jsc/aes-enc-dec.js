@@ -1,5 +1,5 @@
 
-var cipherOp = context.getVariable( "flow.cipher-op-aes" )
+var cipherOp = context.getVariable( "flow.cipher-op-aes" );
 var passphrase = context.getVariable( "flow.cipher-passphrase" );
 var salt = CryptoJS.enc.Base64.parse( context.getVariable( "flow.cipher-salt" ) );
 
@@ -10,8 +10,8 @@ function derivePkdf2KeyAndIv( passphrase, keySize, iterations, salt ){
         hasher: CryptoJS.algo.SHA256
     });
   
-    var key = CryptoJS.lib.WordArray.create(keyiv.words.slice(0, 256/32))
-    var iv = CryptoJS.lib.WordArray.create(keyiv.words.slice( 256/32, 256/32+128/32))
+    var key = CryptoJS.lib.WordArray.create(keyiv.words.slice(0, 256/32));
+    var iv = CryptoJS.lib.WordArray.create(keyiv.words.slice( 256/32, 256/32+128/32));
 
     return [ key, iv ];
 }
@@ -32,7 +32,7 @@ if( cipherOp == "encrypt" ){
             iv: iv,
             padding: CryptoJS.pad.Pkcs7 ,
             mode: CryptoJS.mode.CBC
-    })
+    });
     context.setVariable( "flow.cipher-text", ciphertext.toString() );
 }else{
     // op is decrypt
@@ -47,6 +47,6 @@ if( cipherOp == "encrypt" ){
             iv: iv,
             padding: CryptoJS.pad.Pkcs7 ,
             mode: CryptoJS.mode.CBC
-    })
+    });
     context.setVariable( "flow.plain-text", decrypted.toString(CryptoJS.enc.Utf8) );
 }
