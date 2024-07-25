@@ -1,9 +1,12 @@
 {
     "name": "aes-enc-dec",
     "scripts": {
-      "unit-test": "jest"
+      "unit-test": "jest",
+      "integration-test": "cucumber-js test/integration --format json:./target/reports.js"
   },
   "devDependencies": {
-    "jest": "^29.7.0"
+    "jest": "^29.7.0",
+		"apickli": "^1.0.0",
+    "@cucumber/cucumber": "^7.0.0"
   }
 }

@@ -2,16 +2,21 @@
 /* eslint-disable new-cap */
 "use strict";
 
-const apickliModule = require("apickli");
-const { Before, setDefaultTimeout } = require("@cucumber/cucumber");
+const apickli = require('apickli');
 
-setDefaultTimeout(5 * 1000); // this is in ms
+const env = process.env.NODE_ENV || 'dev';
+console.log('running on ' + env + ' environment');
 
-Before(function () {
-  const host = process.env.TEST_HOST || "org-env.apigee.net";
-  const basePath = `/airports-cicd${process.env.APIGEE_DEPLOYMENT_SUFFIX || ''}/v1`;
-  const baseUri = `${host}${basePath}`;
-  console.log(`Test Base URI: ${baseUri}`);
-  this.apickli = new apickliModule.Apickli("https", baseUri);
-  this.apickli.addRequestHeader("Cache-Control", "no-cache");
+Before( function(){
+    this.Before(function(scenario, callback) {
+
+        const host = process.env.APIGEE_HOST || "api.exco.com";
+        const basePath = "";
+        const url = `${host}${basePath}`;
+
+        console.log(`URL: ${url}`);
+
+        this.apickli = new apickli.Apickli('https', url);
+        callback();
+    });
 });

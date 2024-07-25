@@ -3,3 +3,4 @@ git:latest
 cucumber-reports:5.8.3
 htmlpublisher:1.36
 mask-passwords:173.v6a_077a_291eb_5
+workflow-aggregator:600.vb_57cdd26fdd7
