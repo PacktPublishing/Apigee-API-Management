@@ -6,6 +6,8 @@ ENV CASC_JENKINS_CONFIG /var/jenkins_home/casc.yaml
 USER root
 RUN apk update && apk add --no-cache git maven nodejs npm
 
+COPY --from gcr.io/oauth2l/oauth2l /bin/oauth2l /bin/oauth2l
+
 COPY --chown=jenkins plugins.txt /usr/share/jenkins/ref/plugins.txt
 RUN jenkins-plugin-cli --plugin-file /usr/share/jenkins/ref/plugins.txt
 
