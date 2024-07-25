@@ -2,9 +2,7 @@ pipeline {
 
     agent any
 
-
     parameters {
-            string(name: 'API_VERSION_P', defaultValue: 'google')
             string(name: 'APIGEE_ORG_P', defaultValue: 'apigeex-devops')
             string(name: 'APIGEE_TEST_ENV_P', defaultValue: 'eval')
             string(name: 'APIGEE_PROD_ENV_P', defaultValue: '')
@@ -12,12 +10,10 @@ pipeline {
             string(name: 'WORK_DIR_P', defaultValue: 'Chapter08/crypto-aes-js')
             choice(name: 'GCP_SA_AUTH_P', choices: [ "vm-scope", "jenkins-scope", "token" ], description: 'GCP SA/Token Scope'  )
 
-            string(name: 'APIGEE_USER_P', defaultValue: 'not-used')
-            string(name: 'APIGEE_PASS_P', defaultValue: 'not-used')
             string(name: 'APIGEE_TOKEN_P', defaultValue: '')
 
             string(name: 'GIT_BRANCH_P', defaultValue: 'nightly')
-            string(name: 'AUTHOR_EMAIL_P', defaultValue: 'cicd@apigee.google.com')
+            string(name: 'AUTHOR_EMAIL_P', defaultValue: 'cicd@exco.com')
 
     }
 
@@ -56,29 +52,11 @@ pipeline {
               if( ! env.WORK_DIR ){ env.WORK_DIR = params.WORK_DIR_P }
               if( ! env.GCP_SA_AUTH ){ env.GCP_SA_AUTH = params.GCP_SA_AUTH_P }
 
-              if( ! env.APIGEE_USER ){ env.APIGEE_USER = params.APIGEE_USER_P }
-              if( ! env.APIGEE_PASS ){ env.APIGEE_PASS = params.APIGEE_PASS_P }
               if( ! env.APIGEE_TOKEN ){ env.APIGEE_TOKEN = params.APIGEE_TOKEN_P }
 
               if( ! env.GIT_BRANCH ){ env.GIT_BRANCH = params.GIT_BRANCH_P }
               if( ! env.AUTHOR_EMAIL ){ env.AUTHOR_EMAIL = params.AUTHOR_EMAIL_P }
 
-              // Main branch for Apigee test environment
-              if (env.GIT_BRANCH == "main") {
-                  env.APIGEE_DEPLOYMENT_SUFFIX = ""
-                  env.APIGEE_ENV = env.APIGEE_TEST_ENV
-                  // env.APIGEE_ORG = 'apigee-org-name'
-              // Prod branch for Apigee prod environment
-              } else if (env.GIT_BRANCH == "prod") {
-                  env.APIGEE_DEPLOYMENT_SUFFIX = ""
-                  env.APIGEE_ENV = env.APIGEE_PROD_ENV
-                  // env.APIGEE_ORG = 'apigee-org-name'
-              // All other branches are deployed as separate proxies with suffix in the test environment
-              } else {
-                  env.APIGEE_DEPLOYMENT_SUFFIX = env.GIT_BRANCH ? "-" + env.GIT_BRANCH.replaceAll("\\W", "-") : "-devrel-jenkins"
-                  env.APIGEE_ENV = env.APIGEE_TEST_ENV
-                  // env.APIGEE_ORG = 'apigee-org-name'
-              }
               println "---------- Branch-Dependent Build Config ----------"
               println "Apigee Org: " + env.APIGEE_ORG
               println "Apigee Env: " + env.APIGEE_ENV
@@ -115,16 +93,8 @@ pipeline {
         stage('Unit Test') {
           steps { dir( "${env.WORK_DIR}" ) {
 
-            sh "./node_modules/nyc/bin/nyc.js --reporter=html --reporter=text ./node_modules/mocha/bin/_mocha --timeout 5000 --recursive ./test/unit"
+            sh "npm run unit-test -- --ci --reporters=default --reporters=jest-junit"
 
-            publishHTML(target: [
-              allowMissing: false,
-              alwaysLinkToLastBuild: false,
-              keepAll: false,
-              reportDir: "coverage",
-              reportFiles: 'index.html',
-              reportName: 'Unit Test Report'
-            ])
           } }
         }
 
@@ -141,31 +111,8 @@ pipeline {
           }
         }
 
-        stage('Deploy Edge') {
-          when {
-            expression { env.API_VERSION ==  'apigee'}
-          }
-          steps { dir( "${env.WORK_DIR}" ) {
-
-            sh """
-              mvn clean install \
-                -Papigeeapi \
-                -Dpassword="${APIGEE_CREDS_PSW}" \
-                -Denv="${env.APIGEE_ENV}" \
-                -Dusername="${APIGEE_CREDS_USR}" \
-                -Dorg="${env.APIGEE_ORG}" \
-                -Ddeployment.suffix="${env.APIGEE_DEPLOYMENT_SUFFIX}" \
-                -Ddeployment.description="Jenkins Build: ${env.BUILD_TAG} Author: ${env.AUTHOR_EMAIL}"
-                """
-
-          } }
-        }
-
         stage('Deploy X/hybrid') {
-          when {
-            expression { env.API_VERSION ==  'google'}
-          }
-          steps { dir( "${env.WORK_DIR}" ) {
+            steps { dir( "${env.WORK_DIR}" ) {
 
            // Token precedence: env var; jenkins-scope sa; vm-scope sa; token;
 
@@ -207,6 +154,8 @@ pipeline {
         recordIssues  enabledForFailure: true, 
             aggregatingResults: true,
             tools: [checkStyle(pattern: 'eslint-report.xml')]
+
+        junit 'junit.xml'
 
         cucumber reportTitle: 'Apickli test report',
             fileIncludePattern: '**/reports.json',
