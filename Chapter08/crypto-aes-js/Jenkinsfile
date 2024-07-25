@@ -101,6 +101,15 @@ pipeline {
 
             sh "npm run apigeelint > apigeelint-out.html"
 
+            publishHTML(target: [
+              allowMissing: false,
+              alwaysLinkToLastBuild: false,
+              keepAll: false,
+              reportDir: ".",
+              reportFiles: 'apigeelint-out.html',
+              reportName: 'Apigeelint Report'
+            ]);
+
             sh "rm apigeelint-out.html"
           }}
         }
@@ -197,7 +206,9 @@ pipeline {
 
     post {
       always { dir( "${env.WORK_DIR}" ) {
-        recordIssues tools: [checkStyle(pattern: 'eslint-report.xml')]
+        recordIssues  enabledForFailure: true, 
+            aggregatingResults: true,
+            tools: [checkStyle(pattern: 'eslint-report.xml')]
 
         cucumber reportTitle: 'Apickli test report',
             fileIncludePattern: '**/reports.json',
