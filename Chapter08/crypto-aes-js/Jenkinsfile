@@ -197,9 +197,7 @@ pipeline {
 
     post {
       always { dir( "${env.WORK_DIR}" ) {
-        recordIssues enabledForFailure: true, 
-            aggregatingResults: true, 
-            tool: checkStyle(pattern: 'eslint-report.xml')     
+        recordIssues tools: [checkStyle(pattern: 'eslint-report.xml')]
 
         cucumber reportTitle: 'Apickli test report',
             fileIncludePattern: '**/reports.json',
