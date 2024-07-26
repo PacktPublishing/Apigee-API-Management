@@ -4,31 +4,20 @@ pipeline {
 
     parameters {
             string(name: 'APIGEE_ORG_P', defaultValue: 'apigeex-devops')
-            string(name: 'APIGEE_TEST_ENV_P', defaultValue: 'eval')
-            string(name: 'APIGEE_PROD_ENV_P', defaultValue: '')
+            string(name: 'APIGEE_ENV_P', defaultValue: 'eval')
             string(name: 'TEST_HOST_P', defaultValue: 'api.exco.com')
             string(name: 'WORK_DIR_P', defaultValue: 'Chapter08/crypto-aes-js')
             choice(name: 'GCP_SA_AUTH_P', choices: [ "jenkins-scope", "token" ], description: 'GCP SA/Token Scope'  )
 
             string(name: 'APIGEE_TOKEN_P', defaultValue: '')
 
-            string(name: 'GIT_BRANCH_P', defaultValue: 'nightly')
+            string(name: 'GIT_BRANCH_P', defaultValue: 'main')
             string(name: 'AUTHOR_EMAIL_P', defaultValue: 'cicd@exco.com')
 
     }
 
     environment {
         APIGEE_CREDS = credentials('apigee')
-
-        // Multiple options for setting the Apigee deployment target config:
-        // 1. As a jenkins global property at ${JENKINS_URL}/configure if you don't have access to edit this file
-        // 2. As a branch specific environment variable in the first pipeline stage
-        // 3. As an environment variable for all branches (see below)
-
-        // API_VERSION = 'google'
-        // APIGEE_ORG = 'my-org'
-        // APIGEE_TEST_ENV = 'test1'
-        // TEST_HOST= 'api.example.com'
     }
 
 
@@ -46,8 +35,7 @@ pipeline {
               // env var/param precedence
               if( ! env.API_VERSION ){ env.API_VERSION = params.API_VERSION_P }
               if( ! env.APIGEE_ORG ){ env.APIGEE_ORG = params.APIGEE_ORG_P }
-              if( ! env.APIGEE_TEST_ENV ){ env.APIGEE_TEST_ENV = params.APIGEE_TEST_ENV_P }
-              if( ! env.APIGEE_PROD_ENV ){ env.APIGEE_TEST_ENV = params.APIGEE_PROD_ENV_P }
+              if( ! env.APIGEE_ENV ){ env.APIGEE_TEST_ENV = params.APIGEE_ENV_P }
               if( ! env.TEST_HOST ){ env.TEST_HOST = params.TEST_HOST_P }
               if( ! env.WORK_DIR ){ env.WORK_DIR = params.WORK_DIR_P }
               if( ! env.GCP_SA_AUTH ){ env.GCP_SA_AUTH = params.GCP_SA_AUTH_P }
