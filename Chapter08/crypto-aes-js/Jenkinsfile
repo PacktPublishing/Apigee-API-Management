@@ -85,19 +85,6 @@ pipeline {
           } }
         }
 
-        stage('Commit Author Extraction') {
-          steps {
-            script {
-              if (!env.AUTHOR_EMAIL) {
-                env.AUTHOR_EMAIL = sh (
-                  script: 'git --no-pager show -s --format=\'%ae\'',
-                  returnStdout: true
-                ).trim()
-              }
-            }
-          }
-        }
-
         stage('Deploy X/hybrid') {
             steps { dir( "${env.WORK_DIR}" ) {
 
@@ -117,9 +104,8 @@ pipeline {
                  mvn clean install \
                    -Pgoogleapi \
                    -Denv="${env.APIGEE_ENV}" \
-                   -Dtoken="${env.SA_TOKEN}" \
                    -Dorg="${env.APIGEE_ORG}" \
-                   -Ddeployment.description="Jenkins Build: ${env.BUILD_TAG} Author: ${env.AUTHOR_EMAIL}"
+                   -Dtoken="${env.SA_TOKEN}"
                 """
               }
             }

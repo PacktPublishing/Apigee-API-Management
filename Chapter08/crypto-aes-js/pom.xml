@@ -45,13 +45,12 @@
 
 	<profiles>
 		<profile>
-			<!-- Apigee X and hybrid -->
 			<id>googleapi</id>
 			<properties>
 				<apigee.plugin.version>2.3.5</apigee.plugin.version>
 				<apigee.config-plugin.version>2.4.4</apigee.config-plugin.version>
 				<apigee.hosturl>https://apigee.googleapis.com</apigee.hosturl>
-				<apigee.bearer>${token}</apigee.bearer> <!-- this takes precedence over service account file -->
+				<apigee.bearer>${token}</apigee.bearer>
 				<apigee.serviceaccount.file>${sa}</apigee.serviceaccount.file>
 			</properties>
 		</profile>
@@ -99,42 +98,6 @@
 						</configuration>
 					</execution>
 				</executions>
-			</plugin>
-
-			<plugin>
-				<groupId>com.google.code.maven-replacer-plugin</groupId>
-				<artifactId>replacer</artifactId>
-				<version>1.5.3</version>
-				<executions>
-					<execution>
-						<phase>process-resources</phase>
-						<goals>
-							<goal>replace</goal>
-						</goals>
-					</execution>
-				</executions>
-				<configuration>
-					<basedir>${target.root.dir}</basedir>
-					<includes>
-						<include>test/integration/support/init.js</include>
-						<include>apiproxy/airports-cicd-v1.xml</include>
-						<include>apiproxy/proxies/default.xml</include>
-					</includes>
-					<replacements>
-						<replacement>
-							<token>org-env.apigee.net</token>
-							<value>${apigee.org}-${apigee.env}.apigee.net</value>
-						</replacement>
-						<replacement>
-							<token>/airports-cicd/v1</token>
-							<value>/airports-cicd${deployment.suffix}/v1</value>
-						</replacement>
-						<replacement>
-							<token>@description</token>
-							<value>${deployment.description}</value>
-						</replacement>
-					</replacements>
-				</configuration>
 			</plugin>
 
 			<plugin>
