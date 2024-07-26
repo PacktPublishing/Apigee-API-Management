@@ -1,5 +1,4 @@
 pipeline {
-
     agent any
 
     parameters {
@@ -20,14 +19,7 @@ pipeline {
         APIGEE_CREDS = credentials('apigee')
     }
 
-
     stages {
-        stage('Version Check') {
-            steps {
-                sh "npm -v"
-                sh "mvn -v"
-        }}
-
         stage('Set Apigee Parameters') {
           steps {
             script{
@@ -85,7 +77,7 @@ pipeline {
           } }
         }
 
-        stage('Deploy X/hybrid') {
+        stage('Deploy to Apigee') {
             steps { dir( "${env.WORK_DIR}" ) {
 
            // Token precedence: env var; jenkins-scope sa; vm-scope sa; token;
@@ -112,7 +104,7 @@ pipeline {
           } }
         }
 
-        stage('Functional Test') {
+        stage('Integration Test') {
           steps { dir( "${env.WORK_DIR}" ) {
             sh "TEST_HOST=${env.TEST_HOST} npm run integration-test"
           } }

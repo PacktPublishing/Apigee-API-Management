@@ -1,0 +1,141 @@
+<?xml version='1.1' encoding='UTF-8'?>
+<project>
+  <actions/>
+  <description></description>
+  <keepDependencies>false</keepDependencies>
+  <properties>
+    <hudson.model.ParametersDefinitionProperty>
+      <parameterDefinitions>
+        <hudson.model.StringParameterDefinition>
+          <name>APIGEE_ORG</name>
+          <defaultValue>apigeex-devops</defaultValue>
+          <trim>false</trim>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>APIGEE_ENV</name>
+          <defaultValue>eval</defaultValue>
+          <trim>false</trim>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>TEST_HOST</name>
+          <defaultValue>api.exco.com</defaultValue>
+          <trim>false</trim>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>WORK_DIR</name>
+          <defaultValue>Chapter08/crypto-aes-js</defaultValue>
+          <trim>false</trim>
+        </hudson.model.StringParameterDefinition>
+      </parameterDefinitions>
+    </hudson.model.ParametersDefinitionProperty>
+  </properties>
+  <scm class="hudson.plugins.git.GitSCM" plugin="git@5.2.2">
+    <configVersion>2</configVersion>
+    <userRemoteConfigs>
+      <hudson.plugins.git.UserRemoteConfig>
+        <url>https://github.com/PacktPublishing/Apigee-API-Management.git</url>
+      </hudson.plugins.git.UserRemoteConfig>
+    </userRemoteConfigs>
+    <branches>
+      <hudson.plugins.git.BranchSpec>
+        <name>*/main</name>
+      </hudson.plugins.git.BranchSpec>
+    </branches>
+    <doGenerateSubmoduleConfigurations>false</doGenerateSubmoduleConfigurations>
+    <submoduleCfg class="empty-list"/>
+    <extensions/>
+  </scm>
+  <canRoam>true</canRoam>
+  <disabled>false</disabled>
+  <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
+  <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
+  <triggers/>
+  <concurrentBuild>false</concurrentBuild>
+  <builders>
+    <hudson.tasks.Shell>
+      <command>cd $WORK_DIR
+npm install -silent --no-fund</command>
+      <configuredLocalRules/>
+    </hudson.tasks.Shell>
+    <hudson.tasks.Shell>
+      <command>cd $WORK_DIR
+npm run unit-test
+</command>
+      <configuredLocalRules/>
+    </hudson.tasks.Shell>
+    <hudson.tasks.Maven>
+      <targets>install -Pgoogleapi</targets>
+      <pom>$WORK_DIR/pom.xml</pom>
+      <properties>env=$APIGEE_ENV
+org=$APIGEE_ORG
+token=$SA_TOKEN</properties>
+      <usePrivateRepository>false</usePrivateRepository>
+      <settings class="jenkins.mvn.DefaultSettingsProvider"/>
+      <globalSettings class="jenkins.mvn.DefaultGlobalSettingsProvider"/>
+      <injectBuildVariables>false</injectBuildVariables>
+    </hudson.tasks.Maven>
+    <hudson.tasks.Shell>
+      <command>cd $WORK_DIR
+npm run integration-test</command>
+      <configuredLocalRules/>
+    </hudson.tasks.Shell>
+  </builders>
+  <publishers>
+    <net.masterthought.jenkins.CucumberReportPublisher plugin="cucumber-reports@5.8.3">
+      <fileIncludePattern>**/cucumber-report.json</fileIncludePattern>
+      <fileExcludePattern></fileExcludePattern>
+      <jsonReportDirectory></jsonReportDirectory>
+      <reportTitle></reportTitle>
+      <failedStepsNumber>-1</failedStepsNumber>
+      <skippedStepsNumber>-1</skippedStepsNumber>
+      <pendingStepsNumber>-1</pendingStepsNumber>
+      <undefinedStepsNumber>-1</undefinedStepsNumber>
+      <failedScenariosNumber>-1</failedScenariosNumber>
+      <failedFeaturesNumber>-1</failedFeaturesNumber>
+      <failedStepsPercentage>0.0</failedStepsPercentage>
+      <skippedStepsPercentage>0.0</skippedStepsPercentage>
+      <pendingStepsPercentage>0.0</pendingStepsPercentage>
+      <undefinedStepsPercentage>0.0</undefinedStepsPercentage>
+      <failedScenariosPercentage>0.0</failedScenariosPercentage>
+      <failedFeaturesPercentage>0.0</failedFeaturesPercentage>
+      <buildStatus>UNCHANGED</buildStatus>
+      <stopBuildOnFailedReport>false</stopBuildOnFailedReport>
+      <failedAsNotFailingStatus>false</failedAsNotFailingStatus>
+      <skippedAsNotFailingStatus>false</skippedAsNotFailingStatus>
+      <pendingAsNotFailingStatus>false</pendingAsNotFailingStatus>
+      <undefinedAsNotFailingStatus>false</undefinedAsNotFailingStatus>
+      <trendsLimit>0</trendsLimit>
+      <sortingMethod>ALPHABETICAL</sortingMethod>
+      <customJsFiles></customJsFiles>
+      <customCssFiles></customCssFiles>
+      <mergeFeaturesById>false</mergeFeaturesById>
+      <mergeFeaturesWithRetest>false</mergeFeaturesWithRetest>
+      <hideEmptyHooks>false</hideEmptyHooks>
+      <skipEmptyJSONFiles>false</skipEmptyJSONFiles>
+      <expandAllSteps>false</expandAllSteps>
+      <classificationsFilePattern></classificationsFilePattern>
+    </net.masterthought.jenkins.CucumberReportPublisher>
+  </publishers>
+  <buildWrappers>
+    <com.michelin.cio.hudson.plugins.maskpasswords.MaskPasswordsBuildWrapper>
+      <varMaskRegexes>
+        <varMaskRegex name="SA_TOKEN" regex="SA_TOKEN"/>
+        <varMaskRegex name="token" regex="ya29.[^ ]*"/>
+      </varMaskRegexes>
+    </com.michelin.cio.hudson.plugins.maskpasswords.MaskPasswordsBuildWrapper>
+    <org.jenkinsci.plugins.credentialsbinding.impl.SecretBuildWrapper plugin="credentials-binding@681.vf91669a_32e45">
+      <bindings>
+        <org.jenkinsci.plugins.credentialsbinding.impl.FileBinding>
+          <credentialsId>apigee</credentialsId>
+          <variable>GOOGLE_APPLICATION_CREDENTIALS</variable>
+        </org.jenkinsci.plugins.credentialsbinding.impl.FileBinding>
+      </bindings>
+    </org.jenkinsci.plugins.credentialsbinding.impl.SecretBuildWrapper>
+    <com.lookout.jenkins.EnvironmentScript plugin="environment-script@100.v3a_f1a_6a_b_7549">
+      <script>echo SA_TOKEN=$(oauth2l fetch --scope cloud-platform)</script>
+      <scriptType>unixScript</scriptType>
+      <runOnlyOnParent>false</runOnlyOnParent>
+      <hideEnvironmentVariablesValues>true</hideEnvironmentVariablesValues>
+    </com.lookout.jenkins.EnvironmentScript>
+  </buildWrappers>
+</project>
