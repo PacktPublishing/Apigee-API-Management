@@ -28,14 +28,14 @@ pipeline {
                 sh "mvn -v"
         }}
 
-        stage('Set Apigee Env and Proxy Suffix') {
+        stage('Set Apigee Parameters') {
           steps {
             script{
 
               // env var/param precedence
               if( ! env.API_VERSION ){ env.API_VERSION = params.API_VERSION_P }
               if( ! env.APIGEE_ORG ){ env.APIGEE_ORG = params.APIGEE_ORG_P }
-              if( ! env.APIGEE_ENV ){ env.APIGEE_TEST_ENV = params.APIGEE_ENV_P }
+              if( ! env.APIGEE_ENV ){ env.APIGEE_ENV = params.APIGEE_ENV_P }
               if( ! env.TEST_HOST ){ env.TEST_HOST = params.TEST_HOST_P }
               if( ! env.WORK_DIR ){ env.WORK_DIR = params.WORK_DIR_P }
               if( ! env.GCP_SA_AUTH ){ env.GCP_SA_AUTH = params.GCP_SA_AUTH_P }
@@ -48,7 +48,6 @@ pipeline {
               println "---------- Branch-Dependent Build Config ----------"
               println "Apigee Org: " + env.APIGEE_ORG
               println "Apigee Env: " + env.APIGEE_ENV
-              println "Proxy Deployment Suffix: " + env.APIGEE_DEPLOYMENT_SUFFIX
               println "Apigee Authentication Schema: " + env.GCP_SA_AUTH
             }
           }
@@ -120,7 +119,6 @@ pipeline {
                    -Denv="${env.APIGEE_ENV}" \
                    -Dtoken="${env.SA_TOKEN}" \
                    -Dorg="${env.APIGEE_ORG}" \
-                   -Ddeployment.suffix="${env.APIGEE_DEPLOYMENT_SUFFIX}" \
                    -Ddeployment.description="Jenkins Build: ${env.BUILD_TAG} Author: ${env.AUTHOR_EMAIL}"
                 """
               }
