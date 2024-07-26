@@ -128,7 +128,7 @@ pipeline {
 
         stage('Functional Test') {
           steps { dir( "${env.WORK_DIR}" ) {
-            sh "TEST_HOST=${env.TEST_HOST} node ./node_modules/.bin/cucumber-js ./target/test/integration --format json:./target/reports.json"
+            sh "TEST_HOST=${env.TEST_HOST} npm run integration-test"
           } }
         }
     }
@@ -142,7 +142,7 @@ pipeline {
         junit 'junit.xml'
 
         cucumber reportTitle: 'Apickli test report',
-            fileIncludePattern: '**/reports.json',
+            fileIncludePattern: '**/cucumber-report.json',
             jsonReportDirectory: "target",
             sortingMethod: 'ALPHABETICAL',
             trendsLimit: 10

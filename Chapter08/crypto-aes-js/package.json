@@ -2,12 +2,12 @@
     "name": "aes-enc-dec",
     "scripts": {
       "unit-test": "jest",
-      "integration-test": "cucumber-js test/integration --format json:./target/reports.js",
+      "integration-test": "cucumber-js test/integration --format json:cucumber-report.js",
       "eslint": "eslint -f checkstyle -o eslint-report.xml .",
       "apigeelint": "apigeelint -s ./apiproxy -f html.js -e PO025,PO013"
   },
   "devDependencies": {
-		"apickli": "^1.0.0",
+		"apickli": "^3.0.2",
     "@cucumber/cucumber": "^7.0.0",
 
     "eslint": "^9.0.0",

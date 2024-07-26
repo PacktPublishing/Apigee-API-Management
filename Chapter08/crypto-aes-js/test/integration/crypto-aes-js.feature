@@ -10,7 +10,7 @@ Feature: List of Airports
       | salt       | 1oycXzfn6fU=    |
       | iterations | 10000           |
       | plaintext  | my%20message%0A |
-    When I POST /crypto-aes-js
+    When I POST to /crypto-aes-js
     Then response code should be 200
     And response body path $ should be of type array with length 50
 
@@ -21,6 +21,6 @@ Feature: List of Airports
       | salt       | 1oycXzfn6fU=    |
       | iterations | 10000           |
       | plaintext  | n90/3q45JlmrIQYbVu0gCQ== |
-    When I POST /crypto-aes-js
+    When I POST to /crypto-aes-js
     Then response code should be 200
     And response body path $ should be of type array with length 50
